@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('checkout'){
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Anand997758/cleaning-services-website-static-website.git']]])
+            }
+        }
+        stage('login'){
+            steps {
+                sh 'aws ecr get-login-password --region ap-southeast-1 | sudo docker login --username AWS --password-stdin 724478243610.dkr.ecr.ap-southeast-1.amazonaws.com'
+            }
+        }
+        stage('docker build'){
+            steps {
+                sh 'sudo docker build -t test .'
+            }
+        }
+        stage('docker tags'){
+            steps {
+                sh 'sudo docker tag test:latest 724478243610.dkr.ecr.ap-southeast-1.amazonaws.com/test:latest'
+            }
+        }
+        stage('docker push'){
+            steps {
+                sh 'sudo docker push 724478243610.dkr.ecr.ap-southeast-1.amazonaws.com/test:latest'
+            }
+        }
+        
+    }
+}
