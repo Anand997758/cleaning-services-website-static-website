@@ -7,6 +7,11 @@ pipeline {
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Anand997758/cleaning-services-website-static-website.git']]])
             }
         }
+        stage('cd'){
+            steps {
+                sh 'cd /opt/docker'
+            }
+        }
         stage('login'){
             steps {
                 sh 'aws ecr get-login-password --region ap-southeast-1 | sudo docker login --username AWS --password-stdin 724478243610.dkr.ecr.ap-southeast-1.amazonaws.com'
