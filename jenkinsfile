@@ -8,22 +8,22 @@ pipeline {
         }
         stage('ecr-login') {
             steps {
-                sh 'aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 724478243610.dkr.ecr.ap-southeast-1.amazonaws.com'
+                sh 'aws ecr get-login-password --region ap-southeast-1 | sudo docker login --username AWS --password-stdin 724478243610.dkr.ecr.ap-southeast-1.amazonaws.com'
             }
         }
         stage('ecr-build') {
             steps {
-                sh 'docker build -t new-repo .'
+                sh 'sudo docker build -t new-repo .'
             }
         }
         stage('ecr-tags') {
             steps {
-                sh 'docker tag new-repo:latest 724478243610.dkr.ecr.ap-southeast-1.amazonaws.com/new-repo:latest'
+                sh 'sudo docker tag new-repo:latest 724478243610.dkr.ecr.ap-southeast-1.amazonaws.com/new-repo:latest'
             }
         }
         stage('ecr-push') {
             steps {
-                sh 'docker push 724478243610.dkr.ecr.ap-southeast-1.amazonaws.com/new-repo:latest'
+                sh 'sudo docker push 724478243610.dkr.ecr.ap-southeast-1.amazonaws.com/new-repo:latest'
             }
         }
     }
