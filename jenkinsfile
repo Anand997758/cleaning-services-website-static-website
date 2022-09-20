@@ -10,16 +10,16 @@ pipeline {
         sh 'cd /opt/docker'
         }
         stage('login'){
-        sh 'aws ecr get-login-password --region ap-southeast-1 | sudo docker login --username AWS --password-stdin 724478243610.dkr.ecr.ap-southeast-1.amazonaws.com'
+        aws ecr get-login-password --region ap-southeast-1 | sudo docker login --username AWS --password-stdin 724478243610.dkr.ecr.ap-southeast-1.amazonaws.com
         }
         stage('docker build'){
-        sh 'sudo docker build -t test .'
+        sudo docker build -t test .
         }
         stage('docker tags'){
-        sh 'sudo docker tag test:latest 724478243610.dkr.ecr.ap-southeast-1.amazonaws.com/test:latest'
+        sudo docker tag test:latest 724478243610.dkr.ecr.ap-southeast-1.amazonaws.com/test:latest
         }
         stage('docker push') {
-        sh 'sudo docker push 724478243610.dkr.ecr.ap-southeast-1.amazonaws.com/test:latest'
+        sudo docker push 724478243610.dkr.ecr.ap-southeast-1.amazonaws.com/test:latest
         }
         
     }
